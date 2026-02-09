@@ -1,0 +1,57 @@
+# Terraform Files
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+terraform.tfstate.*.backup
+*.tfstate
+*.tfstate.*
+
+# Environment files
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+crash.log
+crash.*.log
+
+# Backup files
+*.backup
+*.bak
+
+# Local cache
+.cache/
+*.cache
+
+# SSH keys
+*.pem
+*.key
+*.pub
+
+# AWS credentials (don't commit these!)
+.aws/credentials
+.aws/config
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Large binary files
+*.exe
+*.dll
+*.so
