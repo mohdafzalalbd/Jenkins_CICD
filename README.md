@@ -1,33 +1,22 @@
 # Jenkins CI/CD Infrastructure as Code (Terraform)
 
 This project automates the provisioning of a complete Jenkins CI/CD infrastructure on AWS using Terraform. It creates a VPC with public/private subnets, security groups, and an EC2 instance with Jenkins pre-installed.
-## Live Deployment Status (2026-02-09)
+## Live Deployment Status (REDACTED)
 
-The infrastructure was successfully deployed to AWS (ap-south-1) on February 9, 2026. Key details and quick access information are below.
+Live deployment identifiers have been removed from this document. Use Terraform outputs or the AWS console to view environment-specific values (instance IDs, public IPs, AMIs, availability zones and URLs).
 
-- **Region:** ap-south-1 (Mumbai)
-- **AMI used:** ami-06cc5ebfb8571a147 (Ubuntu 20.04 LTS)
-- **Availability Zone:** ap-south-1b
-- **Instance ID:** i-07e7a82ad85c3fa1f
-- **Public IP:** 15.207.88.170
-- **Jenkins URL:** http://15.207.88.170:8080
+Retrieve runtime details with:
+
+```bash
+terraform output
+terraform output jenkins_public_ip
+terraform output jenkins_instance_id
+terraform output jenkins_url
+```
 
 Notes:
 - The provider `default_tags` previously used `timestamp()` which caused plan/apply inconsistencies; that was removed.
-- The AMI and AZ were adjusted during deployment to match the target region and available subnets.
-
-First-time Jenkins steps:
-1. Wait 2–3 minutes for the user-data bootstrap to finish.
-2. SSH into the instance to retrieve the initial admin password:
-
-```bash
-ssh -i jenkins-key.pem ec2-user@15.207.88.170
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-```
-
-3. Open the Jenkins URL in your browser and complete the setup wizard.
-
-If you want the exact same deployment recreated elsewhere, use the provided `variable.tf` values or override them with `terraform.tfvars`.
+- If you deployed and need to retrieve the initial Jenkins admin password, SSH into the instance using the public IP from `terraform output` and read `/var/lib/jenkins/secrets/initialAdminPassword`.
 - **EC2 Instance** - Ubuntu-based server with Jenkins pre-installed
 - **Route Tables** - Network routing configuration
 
