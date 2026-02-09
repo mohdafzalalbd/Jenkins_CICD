@@ -103,8 +103,10 @@ Jenkins_CICD/
 ├── provider.tf               # AWS provider configuration
 ├── variable.tf               # Input variables with defaults
 ├── output.tf                 # Output values (IPs, URLs, IDs)
-├── backend.tf                # Remote state configuration (optional)
-├── module.tf                 # Module reference documentation
+├── backend.tf                # Remote state configuration (optional, commented)
+├── module.tf                 # Module reference documentation (for reference only)
+├── README.md                 # Complete user guide (this file)
+├── KNOWLEDGE.md              # Comprehensive knowledge base and project journey
 ├── jenkins-init.sh           # Bootstrap script for Jenkins installation
 ├── .terraform/               # Terraform working directory (auto-created)
 ├── terraform.tfstate         # State file (auto-created, tracks resources)
@@ -254,9 +256,18 @@ Outputs display important information after deployment (IPs, URLs, IDs).
 | Output | Description | Example |
 |--------|-------------|---------|
 | `vpc_id` | VPC identifier | vpc-12345678 |
+| `vpc_cidr` | VPC CIDR block | 10.0.0.0/16 |
+| `public_subnet_id` | Public subnet ID | subnet-12345678 |
+| `private_subnet_id` | Private subnet ID | subnet-87654321 |
+| `jenkins_instance_id` | EC2 instance ID | i-0123456789abcdef0 |
 | `jenkins_public_ip` | Jenkins server IP | 54.123.45.67 |
+| `jenkins_private_ip` | Instance private IP | 10.0.1.42 |
 | `jenkins_url` | Direct access URL | http://54.123.45.67:8080 |
+| `jenkins_availability_zone` | Instance AZ | us-east-1a |
+| `jenkins_security_group_id` | Security group ID | sg-0123456789abcdef0 |
+| `jenkins_security_group_name` | Security group name | jenkins-security-group |
 | `ssh_command` | SSH connection string | ssh -i key.pem ec2-user@IP |
+| `resource_tags` | Applied resource tags | {Environment: Production, ...} |
 
 **View outputs after deployment:**
 ```bash
@@ -278,11 +289,13 @@ Creates networking infrastructure.
 - `outputs.tf`: Output values
 
 **Resources Created:**
-- AWS VPC with custom CIDR
-- Public subnet (with auto-assign public IP)
+- AWS VPC with custom CIDR (DNS hostnames and DNS support enabled)
+- Public subnet (with auto-assign public IP on launch)
 - Private subnet
 - Internet Gateway
-- Route table for public subnet
+- Route table for public subnet (routes 0.0.0.0/0 to IGW)
+- Route table for private subnet
+- NAT Gateway option (configurable via `enable_nat_gateway` variable)
 
 ---
 
@@ -420,24 +433,30 @@ Initializing modules...
 Shows what will be created (dry-run).
 
 ```bash
-terraform plan
+# Save plan to file (recommended for production)
+terraform plan -out=tfplan
 ```
 
 **Review the output for:**
 - Resources being created/modified/destroyed
 - Variable values being used
-- Number of resources (should be ~10-15)
+- Number of resources (should be ~12-15)
+- All details match your intentions
 
-**Save plan to file (optional):**
-```bash
-terraform plan -out=tfplan
-```
+**Why save the plan?**
+- Ensures the exact same changes are applied
+- Prevents changes between plan and apply
+- Required best practice for production
 
 ### **Step 3: Apply Configuration**
-Creates actual resources on AWS.
+Creates actual resources on AWS using the saved plan.
 
 ```bash
-terraform apply
+# Apply the saved plan (recommended)
+terraform apply tfplan
+
+# Or apply without a saved plan (not recommended)
+# terraform apply
 ```
 
 **When prompted:**
@@ -749,29 +768,34 @@ terraform destroy -auto-approve
 
 After successful deployment:
 
-1. **Configure Jenkins**
+1. **Review Project Documentation**
+   - Read KNOWLEDGE.md for complete project history
+   - Understand architecture decisions
+   - Review security considerations
+
+2. **Configure Jenkins**
    - Set up authentication (LDAP, GitHub, etc.)
    - Configure build agents/workers
    - Set up webhooks for repositories
 
-2. **Create Your First Pipeline**
+3. **Create Your First Pipeline**
    - Create a simple pipeline job
    - Connect to a Git repository
    - Set up automated builds
 
-3. **Add Plugins**
+4. **Add Plugins**
    - Install pipeline plugins
    - Add cloud integration plugins
    - Install monitoring plugins
 
-4. **Set Up Backups**
+5. **Set Up Backups**
    - Regular Jenkins configuration backups
    - Use Jenkins backup/restore plugins
 
-5. **Monitor Infrastructure**
+6. **Monitor Infrastructure**
    - Set up CloudWatch alarms
    - Monitor EC2 instance metrics
-   - Track costs
+   - Track AWS costs
 
 ---
 
@@ -803,12 +827,37 @@ terraform destroy -auto-approve         # Delete without confirmation
 
 ---
 
+## Project Files Guide
+
+### Documentation Files
+- **README.md** - Complete user guide (you are here)
+- **KNOWLEDGE.md** - Comprehensive knowledge base with development journey, architecture decisions, and lessons learned
+
+### Main Configuration Files
+- **main.tf** - Orchestration file with module calls and data sources
+- **provider.tf** - AWS provider setup and Terraform version constraints
+- **variable.tf** - Input variables with defaults and descriptions
+- **output.tf** - Output values for displaying important information
+- **backend.tf** - Remote state configuration (optional, currently commented)
+- **module.tf** - Module reference documentation (use main.tf for actual definitions)
+
+### Bootstrap Script
+- **jenkins-init.sh** - Automatic Jenkins installation script
+
+### Module Directories
+- **vpc/** - VPC networking module
+- **security_group/** - Security group rules module
+- **ec2/** - EC2 instance configuration module
+
+---
+
 ## Additional Resources
 
 - **Terraform Documentation**: https://www.terraform.io/docs/
 - **AWS Provider Documentation**: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 - **Jenkins Documentation**: https://www.jenkins.io/doc/
 - **AWS EC2 Documentation**: https://docs.aws.amazon.com/ec2/
+- **GitHub Repository**: https://github.com/mohdafzalalbd/Jenkins_CICD
 
 ---
 
@@ -857,6 +906,27 @@ Perfect for learning DevOps and cloud infrastructure!
 
 ---
 
+## Project Statistics
+
+- **Total Files**: 18
+- **Total Lines of Code**: ~600
+- **Terraform Modules**: 3
+- **AWS Resources**: ~12-15
+- **Total Variables**: 14
+- **Total Outputs**: 13
+- **Documentation Sections**: 20+
+
+## Important Notes
+
+⚠️ **Security**: Default configuration allows public access (0.0.0.0/0). This is NOT suitable for production. Always restrict access using CIDR blocks in `terraform.tfvars`.
+
+💡 **Best Practice**: Always use `terraform plan -out=tfplan` before applying to ensure reproducible deployments.
+
+📝 **Tip**: Check KNOWLEDGE.md for detailed project journey, architecture decisions, and troubleshooting strategies.
+
+---
+
 **Last Updated**: February 9, 2026
 **Terraform Version**: >= 1.0
 **AWS Provider Version**: ~> 5.0
+**Documentation Version**: 2.0 (Updated with all corrections)
