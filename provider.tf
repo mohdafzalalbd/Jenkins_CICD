@@ -17,7 +17,6 @@ provider "aws" {
       Environment = var.environment
       ManagedBy   = "Terraform"
       Project     = "Jenkins-CICD"
-      CreatedAt   = timestamp()
     }
   }
 }

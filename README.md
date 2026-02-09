@@ -1,33 +1,33 @@
 # Jenkins CI/CD Infrastructure as Code (Terraform)
 
 This project automates the provisioning of a complete Jenkins CI/CD infrastructure on AWS using Terraform. It creates a VPC with public/private subnets, security groups, and an EC2 instance with Jenkins pre-installed.
+## Live Deployment Status (2026-02-09)
 
-## Table of Contents
+The infrastructure was successfully deployed to AWS (ap-south-1) on February 9, 2026. Key details and quick access information are below.
 
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [File Explanations](#file-explanations)
-- [Configuration](#configuration)
-- [Deployment](#deployment)
-- [Outputs](#outputs)
-- [Post-Deployment](#post-deployment)
-- [Security Considerations](#security-considerations)
-- [Troubleshooting](#troubleshooting)
-- [Cleanup](#cleanup)
+- **Region:** ap-south-1 (Mumbai)
+- **AMI used:** ami-06cc5ebfb8571a147 (Ubuntu 20.04 LTS)
+- **Availability Zone:** ap-south-1b
+- **Instance ID:** i-07e7a82ad85c3fa1f
+- **Public IP:** 15.207.88.170
+- **Jenkins URL:** http://15.207.88.170:8080
 
----
+Notes:
+- The provider `default_tags` previously used `timestamp()` which caused plan/apply inconsistencies; that was removed.
+- The AMI and AZ were adjusted during deployment to match the target region and available subnets.
 
-## Overview
+First-time Jenkins steps:
+1. Wait 2–3 minutes for the user-data bootstrap to finish.
+2. SSH into the instance to retrieve the initial admin password:
 
-This Terraform project provides Infrastructure as Code (IaC) to deploy:
+```bash
+ssh -i jenkins-key.pem ec2-user@15.207.88.170
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
 
-- **AWS VPC** - Virtual Private Cloud with custom CIDR blocks
-- **Public Subnet** - For Jenkins server with internet access
-- **Private Subnet** - For future internal resources
-- **Internet Gateway** - For public subnet to reach the internet
-- **Security Groups** - Firewall rules for SSH and Jenkins access
+3. Open the Jenkins URL in your browser and complete the setup wizard.
+
+If you want the exact same deployment recreated elsewhere, use the provided `variable.tf` values or override them with `terraform.tfvars`.
 - **EC2 Instance** - Ubuntu-based server with Jenkins pre-installed
 - **Route Tables** - Network routing configuration
 

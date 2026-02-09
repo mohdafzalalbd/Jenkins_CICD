@@ -45,13 +45,13 @@ variable "instance_type" {
 variable "ami_id" {
   type        = string
   description = "AMI ID for the instance (Ubuntu 20.04 LTS in ap-south-1)"
-  default     = "ami-0d3e7d89d3a3b9e8e"
+  default     = "ami-06cc5ebfb8571a147"
 }
 
 variable "availability_zone" {
   type        = string
   description = "Availability zone for the instance"
-  default     = "ap-south-1a"
+  default     = "ap-south-1b"
 }
 
 variable "root_volume_size" {

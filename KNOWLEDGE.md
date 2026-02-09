@@ -5,7 +5,36 @@
 **Technology:** Terraform, AWS, Jenkins
 **Repository:** https://github.com/mohdafzalalbd/Jenkins_CICD.git
 
+**Last Updated**: February 9, 2026
+**Terraform Version**: >= 1.0
+**AWS Provider Version**: ~> 5.0
+**Documentation Version**: 2.0 (Updated with all corrections)
+
 ---
+
+### Deployment Summary (February 9, 2026)
+
+The final deployment was completed and validated. Key fixes and final outputs are listed below:
+
+- Fixes applied during deployment:
+   - Removed `timestamp()` from `provider.tf` `default_tags` to prevent plan/apply inconsistencies.
+   - Updated AMI to `ami-06cc5ebfb8571a147` (Ubuntu 20.04 LTS) for `ap-south-1`.
+   - Corrected availability zone to `ap-south-1b` to match created subnet.
+
+- Final resources provisioned:
+   - VPC: vpc-02595325da6696e69 (10.0.0.0/16)
+   - Public Subnet: subnet-02d14f1faaf691ac0 (10.0.1.0/24)
+   - Private Subnet: subnet-06140e19f37679094 (10.0.2.0/24)
+   - Internet Gateway: igw-0f35cb5612f2567bb
+   - Security Group: sg-08a994faecb824215 (SSH + Jenkins access)
+   - EC2 Instance: i-07e7a82ad85c3fa1f (t3.medium)
+   - Jenkins URL: http://15.207.88.170:8080
+
+Notes:
+- Jenkins initial admin password path: `/var/lib/jenkins/secrets/initialAdminPassword` on the instance.
+- Use `terraform output` to retrieve any outputs (IPs, IDs, SSH commands).
+
+If you'd like, I can now commit these documentation updates and push them to the remote repository.
 
 ## Table of Contents
 
