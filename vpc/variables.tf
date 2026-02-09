@@ -18,3 +18,9 @@ variable "tags" {
   description = "Tags for VPC resources"
   default     = {}
 }
+
+variable "enable_nat_gateway" {
+  type        = bool
+  description = "Enable NAT Gateway for private subnet internet access"
+  default     = false
+}

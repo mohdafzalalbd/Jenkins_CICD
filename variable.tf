@@ -83,12 +83,14 @@ variable "allowed_ssh_cidr" {
   type        = list(string)
   description = "CIDR blocks allowed for SSH access"
   default     = ["0.0.0.0/0"]
+  sensitive   = false
 }
 
 variable "allowed_jenkins_cidr" {
   type        = list(string)
   description = "CIDR blocks allowed for Jenkins access"
   default     = ["0.0.0.0/0"]
+  sensitive   = false
 }
 
 # Tags

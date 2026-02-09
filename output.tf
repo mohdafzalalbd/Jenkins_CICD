@@ -36,7 +36,7 @@ output "jenkins_private_ip" {
 }
 
 output "jenkins_url" {
-  value       = "http://${module.jenkins_instance.public_ip}:8080"
+  value       = "http://${module.jenkins_instance.public_ip}:${var.jenkins_port}"
   description = "URL to access Jenkins server"
 }
 
@@ -60,4 +60,19 @@ output "ssh_command" {
 output "jenkins_initial_admin_password_location" {
   value       = "/var/lib/jenkins/secrets/initialAdminPassword"
   description = "Location of Jenkins initial admin password on the server"
+}
+
+output "jenkins_availability_zone" {
+  value       = var.availability_zone
+  description = "Availability zone where Jenkins instance is deployed"
+}
+
+output "jenkins_instance_state" {
+  value       = "Use 'terraform state show module.jenkins_instance.aws_instance.main' to get detailed instance info"
+  description = "Command to view Jenkins instance state details"
+}
+
+output "resource_tags" {
+  value       = merge(var.tags, { CreatedAt = "Check AWS Console" })
+  description = "Tags applied to all resources"
 }
