@@ -408,15 +408,15 @@ Total Files: 18 (not counting .git/)
 
 | Variable | Type | Default | Purpose |
 |----------|------|---------|---------|
-| aws_region | string | us-east-1 | AWS region |
+| aws_region | string | ap-south-1 | AWS region (Mumbai) |
 | environment | string | Production | Environment name |
 | vpc_cidr | string | 10.0.0.0/16 | VPC network range |
 | public_subnet_cidr | string | 10.0.1.0/24 | Public subnet |
 | private_subnet_cidr | string | 10.0.2.0/24 | Private subnet |
 | instance_name | string | jenkins-server | Instance name |
 | instance_type | string | t3.medium | EC2 size |
-| ami_id | string | ami-0c55b159cbfafe1f0 | Ubuntu 20.04 LTS |
-| availability_zone | string | us-east-1a | Instance AZ |
+| ami_id | string | ami-0d3e7d89d3a3b9e8e | Ubuntu 20.04 LTS (ap-south-1) |
+| availability_zone | string | ap-south-1a | Instance AZ |
 | root_volume_size | number | 30 | Root disk size (GB) |
 | root_volume_type | string | gp3 | Volume type |
 | jenkins_port | number | 8080 | Jenkins UI port |

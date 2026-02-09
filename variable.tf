@@ -1,7 +1,7 @@
 variable "aws_region" {
   type        = string
   description = "AWS region for resources"
-  default     = "us-east-1"
+  default     = "ap-south-1"
 }
 
 variable "environment" {
@@ -44,14 +44,14 @@ variable "instance_type" {
 
 variable "ami_id" {
   type        = string
-  description = "AMI ID for the instance (Ubuntu 20.04 LTS)"
-  default     = "ami-0c55b159cbfafe1f0"
+  description = "AMI ID for the instance (Ubuntu 20.04 LTS in ap-south-1)"
+  default     = "ami-0d3e7d89d3a3b9e8e"
 }
 
 variable "availability_zone" {
   type        = string
   description = "Availability zone for the instance"
-  default     = "us-east-1a"
+  default     = "ap-south-1a"
 }
 
 variable "root_volume_size" {

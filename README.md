@@ -70,6 +70,7 @@ Before you begin, ensure you have the following installed and configured:
 ### 2. **AWS Account**
    - Active AWS account with billing enabled
    - Permissions to create VPC, EC2, and Security Groups
+   - Note: This project uses ap-south-1 (Mumbai) region by default
 
 ### 3. **AWS CLI** (Optional but recommended)
    - Download: https://aws.amazon.com/cli/
@@ -78,7 +79,7 @@ Before you begin, ensure you have the following installed and configured:
      aws configure
      # Enter your AWS Access Key ID
      # Enter your AWS Secret Access Key
-     # Enter your default region (e.g., us-east-1)
+     # Enter your default region (ap-south-1 recommended)
      # Enter your default output format (e.g., json)
      ```
 
@@ -88,7 +89,7 @@ Before you begin, ensure you have the following installed and configured:
 ### 5. **SSH Key Pair** (For accessing Jenkins server)
    - Create an EC2 key pair in AWS console or CLI:
      ```bash
-     aws ec2 create-key-pair --key-name jenkins-key --region us-east-1 \
+     aws ec2 create-key-pair --key-name jenkins-key --region ap-south-1 \
        --query 'KeyMaterial' --output text > jenkins-key.pem
      chmod 400 jenkins-key.pem
      ```
@@ -203,7 +204,7 @@ Variables are like parameters for your infrastructure. They have defaults but ca
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
-| `aws_region` | string | us-east-1 | AWS region for resources |
+| `aws_region` | string | ap-south-1 | AWS region for resources (Mumbai) |
 | `environment` | string | Production | Environment name |
 | `vpc_cidr` | string | 10.0.0.0/16 | VPC network range |
 | `public_subnet_cidr` | string | 10.0.1.0/24 | Public subnet range |
@@ -377,7 +378,7 @@ Create a file to override variables:
 
 ```bash
 cat > terraform.tfvars << EOF
-aws_region             = "us-east-1"
+aws_region             = "ap-south-1"
 environment            = "Production"
 instance_type          = "t3.medium"
 allowed_ssh_cidr       = ["YOUR_IP/32"]   # Change to your IP!
@@ -396,7 +397,7 @@ root_volume_size     = 50
 allowed_ssh_cidr     = ["203.0.113.45/32"]  # Your public IP
 
 # Different region
-aws_region           = "eu-west-1"
+aws_region           = "eu-west-1"  # Or other regions (default: ap-south-1)
 
 # Staging environment
 environment          = "Staging"
@@ -704,7 +705,7 @@ InsufficientCapacity in the requested Availability Zone
 **Solution:**
 1. Change availability zone in `terraform.tfvars`:
    ```hcl
-   availability_zone = "us-east-1b"
+   availability_zone = "ap-south-1b"
    ```
 
 2. Or change instance type:
