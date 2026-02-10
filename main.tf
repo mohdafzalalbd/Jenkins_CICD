@@ -68,7 +68,7 @@ module "jenkins_instance" {
   subnet_id              = module.vpc.public_subnet_id
   vpc_security_group_ids = [module.jenkins_sg.id]
 
-  user_data = base64encode(file("${path.module}/jenkins-init.sh"))
+  user_data = file("${path.module}/jenkins-init.sh")
 
   root_volume_size = var.root_volume_size
   root_volume_type = var.root_volume_type
